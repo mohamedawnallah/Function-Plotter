@@ -2,15 +2,27 @@ import sys
 import numpy as np
 import re
 import sympy
-from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidget, QMessageBox, QFrame, QFileDialog, QColorDialog, QInputDialog
+from PySide6.QtCore import Qt, QSize
+from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidget, QMessageBox, QFrame, QFileDialog, QColorDialog, QInputDialog, QScrollArea
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
 class FunctionPlotter(QMainWindow):
     def __init__(self):
         super().__init__()
-
-        # Create widgets
+        self.init_variables()
+        self.create_widgets()
+        self.create_layout()
+        self.set_layout()
+        self.connect_signals()
+        
+    def init_variables(self):
+        self.ax = None
+        self.grid_visible = False
+        self.legend_visible = False
+        
+    def create_widgets(self):
+        self.scroll_area = QScrollArea()  
         self.function_label = QLabel("Enter a function of x:")
         self.function_input = QLineEdit()
         self.xmin_label = QLabel("Enter the minimum value of x:")
@@ -32,48 +44,46 @@ class FunctionPlotter(QMainWindow):
         self.y_label_button = QPushButton("Change y-axis label")
         self.title_button = QPushButton("Change title")
         self.cursor_label = QLabel()
-        
-        self.ax = None
-        self.grid_visible = False
-        self.legend_visible = False
-                         
-
-
         self.figure = Figure()
         self.canvas = FigureCanvas(self.figure)
+        self.canvas.setMinimumSize(800, 420)
+    
+    def create_layout(self):
+        self.layout = QVBoxLayout()
+        self.layout.addWidget(self.function_label)
+        self.layout.addWidget(self.function_input)
+        self.layout.addWidget(self.xmin_label)
+        self.layout.addWidget(self.xmin_input)
+        self.layout.addWidget(self.xmax_label)
+        self.layout.addWidget(self.xmax_input)
+        self.layout.addWidget(self.plot_button)
+        self.layout.addWidget(self.canvas)
+        self.layout.addWidget(self.title_button)
+        self.layout.addWidget(self.x_label_button)
+        self.layout.addWidget(self.y_label_button)
+        self.layout.addWidget(self.zoom_in_button)
+        self.layout.addWidget(self.zoom_out_button)
+        self.layout.addWidget(self.reset_button)
+        self.layout.addWidget(self.save_image_button)
+        self.layout.addWidget(self.derivative_button)
+        self.layout.addWidget(self.integral_button)
+        self.layout.addWidget(self.color_button)
+        self.layout.addWidget(self.grid_button)
+        self.layout.addWidget(self.legend_button)
+        self.layout.addWidget(self.add_function_button)
+        self.layout.addWidget(self.cursor_label)
         
-        # Create layout
-        layout = QVBoxLayout()
-        layout.addWidget(self.function_label)
-        layout.addWidget(self.function_input)
-        layout.addWidget(self.xmin_label)
-        layout.addWidget(self.xmin_input)
-        layout.addWidget(self.xmax_label)
-        layout.addWidget(self.xmax_input)
-        layout.addWidget(self.plot_button)
-        layout.addWidget(self.canvas)
-        layout.addWidget(self.title_button)
-        layout.addWidget(self.x_label_button)
-        layout.addWidget(self.y_label_button)
-        layout.addWidget(self.zoom_in_button)
-        layout.addWidget(self.zoom_out_button)
-        layout.addWidget(self.reset_button)
-        layout.addWidget(self.save_image_button)
-        layout.addWidget(self.derivative_button)
-        layout.addWidget(self.integral_button)
-        layout.addWidget(self.color_button)
-        layout.addWidget(self.grid_button)
-        layout.addWidget(self.legend_button)
-        layout.addWidget(self.add_function_button)
-        layout.addWidget(self.cursor_label)
-
-        
-        # Set layout
+    def set_layout(self):
         central_widget = QWidget()
-        central_widget.setLayout(layout)
-        self.setCentralWidget(central_widget)
-
-        # Connect signals
+        central_widget.setLayout(self.layout)
+        self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setWidget(central_widget)
+        self.setCentralWidget(self.scroll_area)
+        self.setGeometry(600, 100, 1000, 900)
+    
+    def connect_signals(self):
         self.plot_button.clicked.connect(self.plot)
         self.zoom_in_button.clicked.connect(self.zoom_in)
         self.zoom_out_button.clicked.connect(self.zoom_out)
@@ -154,7 +164,7 @@ class FunctionPlotter(QMainWindow):
     def save_image(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
-        file_name, _ = QFileDialog.getSaveFileName(self, "Save Image", "", "Images (*.png *.xpm *.jpg *.bmp);;All Files (*)", options=options)
+        file_name, _ = QFileDialog.getSaveFileName(self, "Save Image", "figures/", "Images (*.png *.xpm *.jpg *.bmp);;All Files (*)", options=options)
         if file_name:
             self.figure.savefig(file_name)
             
