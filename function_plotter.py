@@ -1,12 +1,25 @@
-from PySide6.QtWidgets import QMainWindow, QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidget, QMessageBox, QFrame, QFileDialog, QColorDialog, QInputDialog, QScrollArea
-from PySide6.QtCore import Qt, QSize
+from PySide6.QtWidgets import (
+    QMainWindow,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QVBoxLayout,
+    QWidget,
+    QMessageBox,
+    QFrame,
+    QFileDialog,
+    QColorDialog,
+    QInputDialog,
+    QScrollArea,
+)
+from PySide6.QtCore import Qt
 import sympy
 import numpy as np
 import re
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-
 from loguru import logger
+
 
 class FunctionPlotter(QMainWindow):
     def __init__(self):
@@ -16,14 +29,14 @@ class FunctionPlotter(QMainWindow):
         self.create_layout()
         self.set_layout()
         self.connect_signals()
-        
+
     def init_variables(self):
         self.ax = None
         self.grid_visible = False
         self.legend_visible = False
-        
+
     def create_widgets(self):
-        self.scroll_area = QScrollArea()  
+        self.scroll_area = QScrollArea()
         self.function_label = QLabel("Enter a function of x:")
         self.function_input = QLineEdit()
         self.xmin_label = QLabel("Enter the minimum value of x:")
@@ -48,7 +61,7 @@ class FunctionPlotter(QMainWindow):
         self.figure = Figure()
         self.canvas = FigureCanvas(self.figure)
         self.canvas.setMinimumSize(800, 420)
-    
+
     def create_layout(self):
         self.layout = QVBoxLayout()
         self.layout.addWidget(self.function_label)
@@ -73,7 +86,7 @@ class FunctionPlotter(QMainWindow):
         self.layout.addWidget(self.toggle_legend_button)
         self.layout.addWidget(self.add_function_button)
         self.layout.addWidget(self.cursor_label)
-        
+
     def set_layout(self):
         central_widget = QWidget()
         central_widget.setLayout(self.layout)
@@ -83,7 +96,7 @@ class FunctionPlotter(QMainWindow):
         self.scroll_area.setWidget(central_widget)
         self.setCentralWidget(self.scroll_area)
         self.setGeometry(600, 100, 1000, 900)
-    
+
     def connect_signals(self):
         self.plot_button.clicked.connect(self.plot)
         self.zoom_in_button.clicked.connect(self.zoom_in)
@@ -110,7 +123,9 @@ class FunctionPlotter(QMainWindow):
             xmin = float(self.xmin_input.text())
             xmax = float(self.xmax_input.text())
         except ValueError:
-            error_message = "Please enter a valid number for the minimum and maximum values of x."
+            error_message = (
+                "Please enter a valid number for the minimum and maximum values of x."
+            )
             logger.error(error_message)
             QMessageBox.warning(self, "Invalid input", error_message)
             return
@@ -123,7 +138,7 @@ class FunctionPlotter(QMainWindow):
             return
 
         # Create x variable and parse function
-        x = sympy.Symbol('x')
+        x = sympy.Symbol("x")
         function = sympy.parse_expr(function_string.replace("^", "**"))
 
         # Create x and y data
@@ -135,26 +150,26 @@ class FunctionPlotter(QMainWindow):
         self.ax = self.figure.add_subplot(111)
         self.ax.plot(x_data, y_data, label=function_string)
         self.canvas.draw()
-        
+
     def zoom_in(self):
         xlim = self.ax.get_xlim()
         ylim = self.ax.get_ylim()
         self.ax.set_xlim(xlim[0] * 0.9, xlim[1] * 0.9)
         self.ax.set_ylim(ylim[0] * 0.9, ylim[1] * 0.9)
         self.canvas.draw()
-        
+
     def zoom_out(self):
         xlim = self.ax.get_xlim()
         ylim = self.ax.get_ylim()
         self.ax.set_xlim(xlim[0] * 1.1, xlim[1] * 1.1)
         self.ax.set_ylim(ylim[0] * 1.1, ylim[1] * 1.1)
         self.canvas.draw()
-    
+
     def on_press(self, event):
         if event.inaxes != self.ax:
             return
         self.press = event.xdata, event.ydata
-    
+
     def on_release(self, event):
         if self.ax:
             if event.inaxes != self.ax:
@@ -162,21 +177,33 @@ class FunctionPlotter(QMainWindow):
             self.release = event.xdata, event.ydata
             xlim = self.ax.get_xlim()
             ylim = self.ax.get_ylim()
-            self.ax.set_xlim(xlim[0] + (self.press[0] - self.release[0]), xlim[1] + (self.press[0] - self.release[0]))
-            self.ax.set_ylim(ylim[0] + (self.press[1] - self.release[1]), ylim[1] + (self.press[1] - self.release[1]))
+            self.ax.set_xlim(
+                xlim[0] + (self.press[0] - self.release[0]),
+                xlim[1] + (self.press[0] - self.release[0]),
+            )
+            self.ax.set_ylim(
+                ylim[0] + (self.press[1] - self.release[1]),
+                ylim[1] + (self.press[1] - self.release[1]),
+            )
             self.canvas.draw()
-    
+
     def save_image(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
-        file_name, _ = QFileDialog.getSaveFileName(self, "Save Image", "figures/", "Images (*.png *.xpm *.jpg *.bmp);;All Files (*)", options=options)
+        file_name, _ = QFileDialog.getSaveFileName(
+            self,
+            "Save Image",
+            "figures/",
+            "Images (*.png *.xpm *.jpg *.bmp);;All Files (*)",
+            options=options,
+        )
         if file_name:
             self.figure.savefig(file_name)
-            
+
     def reset_plot(self):
         self.figure.clear()
         self.plot()
-        
+
     def on_motion(self, event):
         if self.ax:
             if event.inaxes != self.ax:
@@ -185,41 +212,51 @@ class FunctionPlotter(QMainWindow):
             x = round(x, 2)
             y = round(y, 2)
             self.cursor_label.setText(f"x: {x}, y: {y}")
-    
+
     def get_derivative(self):
         if not self.ax:
-            warning_message = "Please plot the function first before finding the derivative."
+            warning_message = (
+                "Please plot the function first before finding the derivative."
+            )
             QMessageBox.warning(self, "No function plotted", warning_message)
             return
-        x = sympy.Symbol('x')
+        x = sympy.Symbol("x")
         function_str = self.function_input.text()
         function = sympy.parse_expr(function_str.replace("^", "**"))
         derivative = str(function.diff(x))
-        QMessageBox.information(self, "Derivative", f"The derivative of the function is: {derivative}")
+        QMessageBox.information(
+            self, "Derivative", f"The derivative of the function is: {derivative}"
+        )
         return derivative
-    
+
     def get_integral(self):
         if not self.ax:
-            warning_message = "Please plot the function first before finding the integral."
+            warning_message = (
+                "Please plot the function first before finding the integral."
+            )
             QMessageBox.warning(self, "No function plotted", warning_message)
             return
-        x = sympy.Symbol('x')
+        x = sympy.Symbol("x")
         function_str = self.function_input.text()
         function = sympy.parse_expr(function_str.replace("^", "**"))
         integral = str(function.integrate(x))
-        QMessageBox.information(self, "Integral", f"The integral of the function is: {integral} + C")
+        QMessageBox.information(
+            self, "Integral", f"The integral of the function is: {integral} + C"
+        )
         return integral
 
     def change_color(self):
         if not self.ax:
-            warning_message = "Please plot the function first before changing the color."
+            warning_message = (
+                "Please plot the function first before changing the color."
+            )
             QMessageBox.warning(self, "Warning", warning_message)
             return
         color = QColorDialog.getColor()
         for line in self.ax.lines:
             line.set_color(color.name())
         self.canvas.draw()
-    
+
     def toggle_grid(self):
         if not self.ax:
             warning_message = "Please plot the function first before toggling the grid."
@@ -232,10 +269,12 @@ class FunctionPlotter(QMainWindow):
             self.ax.grid(True)
             self.grid_visible = True
         self.canvas.draw()
-    
+
     def toggle_legend(self):
         if not self.ax:
-            warning_message = "Please plot the function first before toggling the legend."
+            warning_message = (
+                "Please plot the function first before toggling the legend."
+            )
             QMessageBox.warning(self, "Warning", warning_message)
             return
         if self.legend_visible:
@@ -245,10 +284,12 @@ class FunctionPlotter(QMainWindow):
             self.legend = self.ax.legend()
             self.legend_visible = True
         self.canvas.draw()
-            
+
     def add_another_function(self):
         if not self.ax:
-            warning_message = "Please plot the first function first before adding another function."
+            warning_message = (
+                "Please plot the first function first before adding another function."
+            )
             QMessageBox.warning(self, "Warning", warning_message)
             return
         function_string = self.function_input.text()
@@ -265,34 +306,43 @@ class FunctionPlotter(QMainWindow):
         y = eval(function_string)
         self.ax.plot(x, y)
         self.canvas.draw()
-    
+
     def change_x_label(self):
         if not self.ax:
-            warning_message = "Please plot the function first before changing the x label."
+            warning_message = (
+                "Please plot the function first before changing the x label."
+            )
             QMessageBox.warning(self, "Warning", warning_message)
             return
-        label, ok = QInputDialog.getText(self, 'Change x-axis label', 'Enter new label:')
+        label, ok = QInputDialog.getText(
+            self, "Change x-axis label", "Enter new label:"
+        )
         if ok:
             self.ax.set_xlabel(label)
             self.canvas.draw()
 
     def change_y_label(self):
         if not self.ax:
-            warning_message = "Please plot the function first before changing the y label."
+            warning_message = (
+                "Please plot the function first before changing the y label."
+            )
             QMessageBox.warning(self, "Warning", warning_message)
             return
-        label, ok = QInputDialog.getText(self, 'Change y-axis label', 'Enter new label:')
+        label, ok = QInputDialog.getText(
+            self, "Change y-axis label", "Enter new label:"
+        )
         if ok:
             self.ax.set_ylabel(label)
             self.canvas.draw()
-    
+
     def change_title(self):
         if not self.ax:
-            warning_message = "Please plot the function first before changing the title."
+            warning_message = (
+                "Please plot the function first before changing the title."
+            )
             QMessageBox.warning(self, "Warning", warning_message)
             return
-        title, ok = QInputDialog.getText(self, 'Change title', 'Enter new title:')
+        title, ok = QInputDialog.getText(self, "Change title", "Enter new title:")
         if ok:
             self.ax.set_title(title)
             self.canvas.draw()
-     
