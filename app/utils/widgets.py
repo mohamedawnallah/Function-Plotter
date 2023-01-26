@@ -27,6 +27,6 @@ class CustomMessageBox(QMessageBox):
         w.setWindowTitle(title)
         w.setIcon(icon)
         w.setStandardButtons(buttons)
-        w.exec_()
+        w.exec()
     
     
