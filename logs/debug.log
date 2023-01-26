@@ -1,0 +1,5 @@
+2023-01-26 19:22:10.226 | ERROR    | utils.helpers:show_message:56 - Please enter a valid function-Cannot convert expression to float
+2023-01-26 19:22:32.779 | ERROR    | utils.helpers:show_message:56 - Please enter a valid function-Cannot convert expression to float
+2023-01-26 19:23:25.038 | ERROR    | utils.helpers:show_message:56 - function is not valid
+2023-01-26 19:23:28.500 | ERROR    | utils.helpers:show_message:56 - function is not valid
+2023-01-26 19:23:35.853 | ERROR    | utils.helpers:show_message:56 - function is not valid
