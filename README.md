@@ -33,7 +33,7 @@ python3 main.py
 
 That's all you need to know to start! 🎉
 
-## 📖 Examples
+## Examples
 Here are a few examples of the types of functions you can plot with Function Plotter:
 - Polynomial functions (e.g. `x^2 + 2*x + 1`)
 - Trigonometric functions (e.g. `sin(x)`)
@@ -61,6 +61,9 @@ Here are a few examples of the types of functions you can plot with Function Plo
 
 ## Tests
 To run the tests for the app, navigate to the project root and run the command `pytest`. This will run all the tests in the `app/tests/` directory.
+
+## Contribute
+Function Plotter is an open-source project and we welcome any contributions. If you have any ideas or suggestions for new features, feel free to submit a pull request or open an issue on the Github repository.
 
 ## Licensing
 Function Plotter is released under the MIT license. Please see the LICENSE file for more information.
