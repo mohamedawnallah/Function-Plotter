@@ -1,6 +1,7 @@
 import pytest
 from function_plotter import FunctionPlotter
 from utils.widgets import CustomMessageBox
+
 @pytest.fixture
 def function_plotter(qtbot):
     plotter = FunctionPlotter()
@@ -9,6 +10,6 @@ def function_plotter(qtbot):
 
 @pytest.fixture
 def custom_message_box(qtbot):
-    w = CustomMessageBox()
-    qtbot.addWidget(w)
-    return w
+    custom_msg_box = CustomMessageBox()
+    qtbot.addWidget(custom_msg_box)
+    return custom_msg_box
