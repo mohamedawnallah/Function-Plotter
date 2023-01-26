@@ -21,7 +21,7 @@ class CustomMessageBox(QMessageBox):
     @staticmethod
     def showWithTimeout(timeout_seconds, title, message, icon=QMessageBox.Information, buttons=QMessageBox.Ok):
         w = CustomMessageBox()
-        w.autoclose = timeout_seconds != -1
+        w.autoclose = bool(timeout_seconds)
         w.timeout = timeout_seconds
         w.setText(message)
         w.setWindowTitle(title)

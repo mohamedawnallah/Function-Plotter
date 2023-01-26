@@ -148,30 +148,34 @@ class FunctionPlotter(QMainWindow):
             y = round(y, 2)
             self.cursor_label.setText(f"x: {x}, y: {y}")
 
-    def plot(self, message_timeout_seconds=0):
+    def plot(self, message_timeout_seconds=0, is_another_function=False):
         function_input_text = self.function_input.text()
         xmin_input, xmax_input = self.xmin_input.text(), self.xmax_input.text()
         try:
-            function_string: str = utils.normalize_function_string(function_input_text)
-            xmin, xmax = utils.get_x_range(xmin_input, xmax_input)
-            x_data, y_data = utils.get_xy_data(function_string, xmin, xmax)
+            function_parsed: sympy.core = helpers.parse_function_string(function_input_text)
+            xmin, xmax = helpers.get_x_range(xmin_input, xmax_input)
+            x_data, y_data = helpers.get_xy_data(function_parsed, xmin, xmax)
         except ValidationError as validation_error:
             validation_error_message = str(validation_error)
-            utils.show_message(timeout_seconds=message_timeout_seconds, title="Error", message=validation_error_message, message_type=MessageType.ERROR)
+            helpers.show_message(timeout_seconds=message_timeout_seconds, title="Error", message=validation_error_message, message_type=MessageType.ERROR)
             return
-        # except SyntaxError as math_syntax_error:
-            # helpers.show_message(timeout_seconds=message_timeout_seconds, title="Error", message=str(value_error), message_type=MessageType.ERROR)
+        try:
+            if not is_another_function:
+                self.figure.clear()
+                self.ax = self.figure.add_subplot(111)
+            self.ax.plot(x_data, y_data, label=function_parsed)
+            self.canvas.draw()
+        except TypeError as type_error:
+            type_error_message = "Please enter a valid function" + "-" + str(type_error)
+            helpers.show_message(timeout_seconds=message_timeout_seconds, title="Error", message=type_error_message, message_type=MessageType.ERROR)
+            return
 
-        self.figure.clear()
-        self.ax = self.figure.add_subplot(111)
-        self.ax.plot(x_data, y_data, label=function_string)
-        self.canvas.draw()
 
     def zoom_in(self, message_timeout_seconds=0):
         if not self.ax:
             message = "You need to plot a function first to zoom in"
             title = "Zoom in"
-            utils.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
+            helpers.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
             return 
         xlim = self.ax.get_xlim()
         ylim = self.ax.get_ylim()
@@ -183,7 +187,7 @@ class FunctionPlotter(QMainWindow):
         if not self.ax:
             message = "You need to plot a function first to zoom out"
             title = "Zoom out"
-            utils.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
+            helpers.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
             return 
         xlim = self.ax.get_xlim()
         ylim = self.ax.get_ylim()
@@ -208,7 +212,7 @@ class FunctionPlotter(QMainWindow):
         if not self.ax:
             message = "You need to plot a function first to reset the plot"
             title = "Reset plot"
-            utils.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
+            helpers.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
         self.figure.clear()
         self.plot()
 
@@ -216,33 +220,33 @@ class FunctionPlotter(QMainWindow):
         if not self.ax:
             message = "Please plot the function first before finding the derivative."
             title = "No function plotted"
-            utils.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
+            helpers.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
             return
         function_str = self.function_input.text()
         function_parsed = helpers.parse_function_string(function_str)
         x = sympy.Symbol("x")
         derivative = str(function_parsed.diff(x))
-        utils.show_message(timeout_seconds=message_timeout_seconds, title="Derivative", message=f"The derivative of the function is: {derivative}")
+        helpers.show_message(timeout_seconds=message_timeout_seconds, title="Derivative", message=f"The derivative of the function is: {derivative}", message_type=MessageType.INFORMATION)
         return derivative
 
     def get_integral(self, message_timeout_seconds=0):
         if not self.ax:
             message = "Please plot the function first before finding the integral."
             title = "No function plotted"
-            utils.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
+            helpers.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
             return
         function_str = self.function_input.text()
         function_parsed = helpers.parse_function_string(function_str)
         x = sympy.Symbol("x")
         integral = str(function_parsed.integrate(x)) + " + C"
-        utils.show_message(timeout_seconds=message_timeout_seconds, title="Integral", message=f"The integral of the function is: {integral}")
+        helpers.show_message(timeout_seconds=message_timeout_seconds, title="Integral", message=f"The integral of the function is: {integral}", message_type=MessageType.INFORMATION)
         return integral
 
     def change_color(self, message_timeout_seconds=0, color_input=None):
         if not self.ax:
             message = "Please plot the function first before changing the color."
             title = "Change Color"
-            utils.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
+            helpers.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
             return
         color = QColorDialog.getColor() if not color_input else color_input
         for line in self.ax.lines:
@@ -253,7 +257,7 @@ class FunctionPlotter(QMainWindow):
         if not self.ax:
             message = "Please plot the function first before toggling the grid."
             title = "Toggle Grid"
-            utils.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
+            helpers.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
             return
         if self.grid_visible:
             self.ax.grid(False)
@@ -267,7 +271,7 @@ class FunctionPlotter(QMainWindow):
         if not self.ax:
             message = "Please plot the function first before toggling the legend."
             title = "Toggle Legend"
-            utils.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
+            helpers.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
             return
         if self.legend_visible:
             self.legend.remove()
@@ -277,32 +281,19 @@ class FunctionPlotter(QMainWindow):
             self.legend_visible = True
         self.canvas.draw()
         
-
     def plot_another_function(self, message_timeout_seconds=0):
         if not self.ax:
             message = "Please plot the first function first before adding another function."
             title = "Add Another Function"
-            utils.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
+            helpers.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
             return
-        function_input_text = self.function_input.text()
-        xmin_input, xmax_input = self.xmin_input.text(), self.xmax_input.text()
-        try:
-            function_string: str = utils.normalize_function_string(function_input_text)
-            xmin, xmax = utils.get_x_range(xmin_input, xmax_input)
-        except ValueError:
-            utils.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.ERROR)
-            return
-        x = np.linspace(xmin, xmax, 1000)
-        y = eval(function_string)
-        self.ax.plot(x, y)
-        self.canvas.draw()
-        
+        self.plot(is_another_function=True)
 
     def change_x_label(self, message_timeout_seconds=0, label=None, ok=None):
         if not self.ax:
             message = "Please plot the function first before changing the x label."
             title = "Change x-axis label"
-            utils.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
+            helpers.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
             return
         label, ok = QInputDialog.getText(self, "Change x-axis label", "Enter new label:" ) if not (label and ok) else (label,ok)
         if ok:
@@ -313,7 +304,7 @@ class FunctionPlotter(QMainWindow):
         if not self.ax:
             message = "Please plot the function first before changing the y label."
             title = "Change y-axis label"
-            utils.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
+            helpers.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
             return
         label, ok = QInputDialog.getText(self, "Change y-axis label", "Enter new label:" ) if not (label and ok) else (label,ok)
         if ok:
@@ -324,7 +315,7 @@ class FunctionPlotter(QMainWindow):
         if not self.ax:
             message = "Please plot the function first before changing the title."
             title = "Change Title"
-            utils.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
+            helpers.show_message(timeout_seconds=message_timeout_seconds, title=title, message=message, message_type=MessageType.WARNING)
             return
         title, ok = QInputDialog.getText(self, "Change title", "Enter new title:")
         if ok:
