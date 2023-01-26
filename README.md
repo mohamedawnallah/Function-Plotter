@@ -24,7 +24,7 @@ Function Plotter is a powerful tool for visualizing mathematical functions on Gi
 |<img width="1604"  src="assets/images/demo-13.png"> | <img width="1604"  src="assets/images/demo-14.png">|<img width="1604"  src="assets/images/demo-15.png">|
 |<img width="1604"  src="assets/images/demo-16.png"> | <img width="1604"  src="assets/images/demo-17.png">|<img width="1604"  src="assets/images/demo-18.png">|
 ## Video Recording
-
+https://github.com/mhmdawnallah/Function-Plotter/blob/main/assets/videos/demo-1.mov
 
 ## ⚡️ Quick start
 
