@@ -24,6 +24,7 @@ def test_on_press_canvas(qtbot, function_plotter: FunctionPlotter):
 
 @pytest.mark.qt
 def test_on_release_canvas(qtbot, function_plotter: FunctionPlotter):
+    """Test the on_release function of the function plotter"""
     function_input = "x^2"
     xmin_input, xmax_input = "1", "10"
     qtbot.keyClicks(function_plotter.function_input, function_input)
@@ -42,6 +43,7 @@ def test_on_release_canvas(qtbot, function_plotter: FunctionPlotter):
     
 @pytest.mark.qt
 def test_on_motion_canvas(qtbot, function_plotter: FunctionPlotter):
+    """Test the on_motion function of the function plotter"""
     function_input = "x^2"
     xmin_input, xmax_input = "1", "10"
     qtbot.keyClicks(function_plotter.function_input, function_input)

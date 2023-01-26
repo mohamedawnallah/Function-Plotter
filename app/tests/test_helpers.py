@@ -6,25 +6,30 @@ from utils.enums import MessageType
 from unittest import mock
 from utils import helpers
 def test_parse_function_string():
+    """Test the parse_function_string function."""
     function_string = "x^2+3*x-1"
     parsed_function = helpers.parse_function_string(function_string)
     assert parsed_function == sympy.parse_expr(function_string.replace("^", "**"))
 
 def test_empty_parse_function_string():
+    """Test the parse_function_string function with an empty function string."""
     function_string = ""
     with pytest.raises(ValidationError, match="function is empty"):
         helpers.parse_function_string(function_string)
         
 def test_validate_function():
+    """Test the validate_function function."""
     function_string = ""
     with pytest.raises(ValidationError, match="function is empty"):
         helpers.validate_function(function_string)
 
 def test_normalize_function():
+    """Test the normalize_function function."""
     function_string = "x^2+3*x-1"
     assert helpers.normalize_function(function_string) == "x**2+3*x-1"
 
 def test_parse_function_string_to_sympy():
+    """Test the parse_function_string_to_sympy function."""
     function_string = helpers.normalize_function("x^2+3*x-1")
     parsed_function = helpers.parse_function_string_to_sympy(function_string)
     assert parsed_function == sympy.parse_expr(function_string)
@@ -34,6 +39,7 @@ def test_parse_function_string_to_sympy():
         helpers.parse_function_string_to_sympy(function_string)
         
 def test_get_x_range():
+    """Test the get_x_range function."""
     xmin_input = "0"
     xmax_input = "10"
     xmin, xmax = helpers.get_x_range(xmin_input, xmax_input)
@@ -50,6 +56,7 @@ def test_get_x_range():
         helpers.get_x_range(xmin_input, xmax_input)
 
 def test_get_xy_data():
+    """Test the get_xy_data function."""
     function_string = helpers.normalize_function("x^2+3*x-1")
     function_parsed = sympy.parse_expr(function_string)
     xmin = 0
@@ -59,6 +66,7 @@ def test_get_xy_data():
     assert len(y_data) == 101
 
 def test_show_message():
+    """Test the show_message function."""
     timeout_seconds = 2
     title = "Test"
     message = "Test message"

@@ -64,6 +64,7 @@ class FunctionPlotter(QMainWindow):
         self.canvas.setMinimumSize(800, 420)
 
     def create_layout(self):
+        """Create the layout for the main window."""
         self.layout = QVBoxLayout()
         self.layout.addWidget(self.function_label)
         self.layout.addWidget(self.function_input)
@@ -89,6 +90,7 @@ class FunctionPlotter(QMainWindow):
         self.layout.addWidget(self.cursor_label)
 
     def set_layout(self):
+        """Set the layout for the main window."""
         central_widget = QWidget()
         central_widget.setLayout(self.layout)
         self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
@@ -99,6 +101,7 @@ class FunctionPlotter(QMainWindow):
         self.setGeometry(600, 100, 1000, 900)
 
     def connect_signals(self):
+        """Connect signals to slots."""
         self.plot_button.clicked.connect(self.plot)
         self.zoom_in_button.clicked.connect(self.zoom_in)
         self.zoom_out_button.clicked.connect(self.zoom_out)
@@ -118,11 +121,13 @@ class FunctionPlotter(QMainWindow):
         self.canvas.mpl_connect("motion_notify_event", self.on_motion_canvas)
 
     def on_press_canvas(self, event):
+        """When the mouse is pressed, record the x and y coordinates."""
         if event.inaxes != self.ax:
             return
         self.press = event.xdata, event.ydata
 
     def on_release_canvas(self, event):
+        """When the mouse is released, record the x and y coordinates and"""
         if self.ax:
             if event.inaxes != self.ax:
                 return
@@ -140,6 +145,7 @@ class FunctionPlotter(QMainWindow):
             self.canvas.draw()
 
     def on_motion_canvas(self, event):
+        """When the mouse is moved, update the cursor label"""
         if self.ax:
             if event.inaxes != self.ax:
                 return
@@ -149,6 +155,7 @@ class FunctionPlotter(QMainWindow):
             self.cursor_label.setText(f"x: {x}, y: {y}")
 
     def plot(self, message_timeout_seconds=0, is_another_function=False):
+        """Plot the function"""
         function_input_text = self.function_input.text()
         xmin_input, xmax_input = self.xmin_input.text(), self.xmax_input.text()
         try:
@@ -172,6 +179,7 @@ class FunctionPlotter(QMainWindow):
 
 
     def zoom_in(self, message_timeout_seconds=0):
+        """Zoom in"""
         if not self.ax:
             message = "You need to plot a function first to zoom in"
             title = "Zoom in"
@@ -184,6 +192,7 @@ class FunctionPlotter(QMainWindow):
         self.canvas.draw()
 
     def zoom_out(self, message_timeout_seconds=0):
+        """Zoom out"""
         if not self.ax:
             message = "You need to plot a function first to zoom out"
             title = "Zoom out"
@@ -196,6 +205,7 @@ class FunctionPlotter(QMainWindow):
         self.canvas.draw()
 
     def save_image(self, file_name=None, path="figures/"):
+        """Save the image"""
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
         file_name, _ = QFileDialog.getSaveFileName(
@@ -209,6 +219,7 @@ class FunctionPlotter(QMainWindow):
             self.figure.savefig(file_name)
 
     def reset_plot(self, message_timeout_seconds=0):
+        """Reset the plot"""
         if not self.ax:
             message = "You need to plot a function first to reset the plot"
             title = "Reset plot"
@@ -217,6 +228,7 @@ class FunctionPlotter(QMainWindow):
         self.plot()
 
     def get_derivative(self, message_timeout_seconds=0):
+        """Get the derivative of the function"""
         if not self.ax:
             message = "Please plot the function first before finding the derivative."
             title = "No function plotted"
@@ -230,6 +242,7 @@ class FunctionPlotter(QMainWindow):
         return derivative
 
     def get_integral(self, message_timeout_seconds=0):
+        """Get the integral of the function"""
         if not self.ax:
             message = "Please plot the function first before finding the integral."
             title = "No function plotted"
@@ -243,6 +256,7 @@ class FunctionPlotter(QMainWindow):
         return integral
 
     def change_color(self, message_timeout_seconds=0, color_input=None):
+        """Change the color of the function"""
         if not self.ax:
             message = "Please plot the function first before changing the color."
             title = "Change Color"
@@ -254,6 +268,7 @@ class FunctionPlotter(QMainWindow):
         self.canvas.draw()
 
     def toggle_grid(self, message_timeout_seconds=0):
+        """Toggle the grid"""
         if not self.ax:
             message = "Please plot the function first before toggling the grid."
             title = "Toggle Grid"
@@ -268,6 +283,7 @@ class FunctionPlotter(QMainWindow):
         self.canvas.draw()
 
     def toggle_legend(self, message_timeout_seconds=0):
+        """Toggle the legend"""
         if not self.ax:
             message = "Please plot the function first before toggling the legend."
             title = "Toggle Legend"
@@ -282,6 +298,7 @@ class FunctionPlotter(QMainWindow):
         self.canvas.draw()
         
     def plot_another_function(self, message_timeout_seconds=0):
+        """Plot another function"""
         if not self.ax:
             message = "Please plot the first function first before adding another function."
             title = "Add Another Function"
@@ -290,6 +307,7 @@ class FunctionPlotter(QMainWindow):
         self.plot(is_another_function=True)
 
     def change_x_label(self, message_timeout_seconds=0, label=None, ok=None):
+        """Change the x label"""
         if not self.ax:
             message = "Please plot the function first before changing the x label."
             title = "Change x-axis label"
@@ -301,6 +319,7 @@ class FunctionPlotter(QMainWindow):
             self.canvas.draw()
 
     def change_y_label(self, message_timeout_seconds=0, label=None, ok=None):
+        """Change the y label"""
         if not self.ax:
             message = "Please plot the function first before changing the y label."
             title = "Change y-axis label"
@@ -312,6 +331,7 @@ class FunctionPlotter(QMainWindow):
             self.canvas.draw()
 
     def change_title(self, message_timeout_seconds=0):
+        """Change the title"""
         if not self.ax:
             message = "Please plot the function first before changing the title."
             title = "Change Title"
