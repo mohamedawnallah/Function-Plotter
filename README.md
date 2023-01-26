@@ -15,6 +15,11 @@ Function Plotter is a powerful tool for visualizing mathematical functions on Gi
 - and more!
 
 ## Screenshots
+| | | |
+|:-------------------------:|:-------------------------:|:-------------------------:|
+|<img width="1604"  src="assets/demo-1.png">  |  <img width="1604"  src="assets/demo-2.png">|<img width="1604"  src="assets/demo-3.png">|
+|<img width="1604"  src="assets/demo-4.png">  |  <img width="1604"  src="assets/demo-5.png">|<img width="1604"  src="assets/demo-6.png">|
+|<img width="1604"  src="assets/demo-7.png">  |  <img width="1604"  src="assets/demo-8.png">|<img width="1604"  src="assets/demo-9.png">| <img width="1604"  src="assets/demo-10.png"> | <img width="1604"  src="assets/demo-11.png"> | <img width="1604"  src="assets/demo-12.png"> | <img width="1604"  src="assets/demo-13.png"> | <img width="1604"  src="assets/demo-14.png"> | <img width="1604"  src="assets/demo-15.png"> | <img width="1604"  src="assets/demo-16.png"> | <img width="1604"  src="assets/demo-17.png"> | <img width="1604"  src="assets/demo-18.png"> | <img width="1604"  src="assets/demo-19.png">
 
 ## Video Recording
 
