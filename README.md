@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img alt="cgapp logo" src="assets/function_plotter_logo.png" width="224px"/><br/>
+  <img alt="cgapp logo" src="assets/function-plotter-logo.png" width="224px"/><br/>
   Function Plotter
 </h1>
 <p align="center">Discover the power of function plotting with <b>Function Plotter</b> on GitHub.<br/></br>The ultimate tool for visualizing mathematical functions on Github!</p>
@@ -15,12 +15,31 @@ Function Plotter is a powerful tool for visualizing mathematical functions on Gi
 - and more!
 
 ## Screenshots
-| | | |
+<!-- | | | |
 |:-------------------------:|:-------------------------:|:-------------------------:|
 |<img width="1604"  src="assets/demo-1.png">  |  <img width="1604"  src="assets/demo-2.png">|<img width="1604"  src="assets/demo-3.png">|
 |<img width="1604"  src="assets/demo-4.png">  |  <img width="1604"  src="assets/demo-5.png">|<img width="1604"  src="assets/demo-6.png">|
-|<img width="1604"  src="assets/demo-7.png">  |  <img width="1604"  src="assets/demo-8.png">|<img width="1604"  src="assets/demo-9.png">| <img width="1604"  src="assets/demo-10.png"> | <img width="1604"  src="assets/demo-11.png"> | <img width="1604"  src="assets/demo-12.png"> | <img width="1604"  src="assets/demo-13.png"> | <img width="1604"  src="assets/demo-14.png"> | <img width="1604"  src="assets/demo-15.png"> | <img width="1604"  src="assets/demo-16.png"> | <img width="1604"  src="assets/demo-17.png"> | <img width="1604"  src="assets/demo-18.png"> | <img width="1604"  src="assets/demo-19.png">
-
+|<img width="1604"  src="assets/demo-7.png">  |  <img width="1604"  src="assets/demo-8.png">|<img width="1604"  src="assets/demo-9.png">| <img width="1604"  src="assets/demo-10.png"> | <img width="1604"  src="assets/demo-11.png"> | <img width="1604"  src="assets/demo-12.png"> | <img width="1604"  src="assets/demo-13.png"> | <img width="1604"  src="assets/demo-14.png"> | <img width="1604"  src="assets/demo-15.png"> | <img width="1604"  src="assets/demo-16.png"> | <img width="1604"  src="assets/demo-17.png"> | <img width="1604"  src="assets/demo-18.png"> | <img width="1604"  src="assets/demo-19.png"> -->
+<div class="container">
+    <img width="400" height="400" src="assets/demo-1.png" />
+    <img width="520" height="400" src="assets/demo-2.png" />
+    <img width="400" height="400" src="assets/demo-3.png" />
+    <img width="440" height="400" src="assets/demo-4.png" />
+    <img width="360" height="400" src="assets/demo-5.png" />
+    <img width="400" height="400" src="assets/demo-6.png" />
+    <img width="360" height="400" src="assets/demo-7.png" />
+    <img width="600" height="400" src="assets/demo-8.png" />
+    <img width="480" height="400" src="assets/demo-9.png" />
+    <img width="520" height="400" src="assets/demo-10.png" />
+    <img width="560" height="400" src="assets/demo-11.png" />
+    <img width="480" height="400" src="assets/demo-12.png" />
+    <img width="560" height="400" src="assets/demo-13.png" />
+    <img width="320" height="400" src="assets/demo-14.png" />
+    <img width="480" height="400" src="assets/demo-15.png" />
+    <img width="440" height="400" src="assets/demo-16.png" />
+    <img width="440" height="400" src="assets/demo-17.png" />
+    <img width="440" height="400" src="assets/demo-18.png" />
+</div>
 ## Video Recording
 
 ## ⚡️ Quick start
