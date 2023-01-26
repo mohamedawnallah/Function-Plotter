@@ -195,13 +195,13 @@ class FunctionPlotter(QMainWindow):
         self.ax.set_ylim(ylim[0] * 1.1, ylim[1] * 1.1)
         self.canvas.draw()
 
-    def save_image(self, file_name=None):
+    def save_image(self, file_name=None, path="figures/"):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
         file_name, _ = QFileDialog.getSaveFileName(
             self,
             "Save Image",
-            "figures/",
+             path,
             "Images (*.png *.xpm *.jpg *.bmp);;All Files (*)",
             options=options,
         ) if not file_name else (file_name, None)
