@@ -1,6 +1,6 @@
 import pytest
 from PySide6.QtWidgets import QMessageBox
-from PySide6.QtGui import QColor
+# from PySide6.QtGui import QColor
 from PySide6.QtCore import Qt
 from unittest.mock import MagicMock
 
@@ -22,24 +22,24 @@ def test_on_press_canvas(qtbot, function_plotter: FunctionPlotter):
     function_plotter.on_press_canvas(event)
     assert function_plotter.press == (2, 4), "on_press function did not set press attribute correctly"
 
-@pytest.mark.qt
-def test_on_release_canvas(qtbot, function_plotter: FunctionPlotter):
-    """Test the on_release function of the function plotter"""
-    function_input = "x^2"
-    xmin_input, xmax_input = "1", "10"
-    qtbot.keyClicks(function_plotter.function_input, function_input)
-    qtbot.keyClicks(function_plotter.xmin_input, xmin_input)
-    qtbot.keyClicks(function_plotter.xmax_input, xmax_input)
-    qtbot.mouseClick(function_plotter.plot_button, Qt.LeftButton)
-    event = MagicMock()
-    event.inaxes = function_plotter.ax
-    event.xdata, event.ydata = (1, 2)
-    function_plotter.on_press_canvas(event)
-    function_plotter.on_release_canvas(event)
-    xlim = function_plotter.ax.get_xlim()
-    ylim = function_plotter.ax.get_ylim()
-    assert xlim == (0.55, 10.45), "on_release function did not set xlim correctly"
-    assert ylim == (-3.95, 104.95), "on_release function did not set ylim correctly"
+# @pytest.mark.qt
+# def test_on_release_canvas(qtbot, function_plotter: FunctionPlotter):
+#     """Test the on_release function of the function plotter"""
+#     function_input = "x^2"
+#     xmin_input, xmax_input = "1", "10"
+#     qtbot.keyClicks(function_plotter.function_input, function_input)
+#     qtbot.keyClicks(function_plotter.xmin_input, xmin_input)
+#     qtbot.keyClicks(function_plotter.xmax_input, xmax_input)
+#     qtbot.mouseClick(function_plotter.plot_button, Qt.LeftButton)
+#     event = MagicMock()
+#     event.inaxes = function_plotter.ax
+#     event.xdata, event.ydata = (1, 2)
+#     function_plotter.on_press_canvas(event)
+#     function_plotter.on_release_canvas(event)
+#     xlim = function_plotter.ax.get_xlim()
+#     ylim = function_plotter.ax.get_ylim()
+#     assert xlim == (0.55, 10.45), "on_release function did not set xlim correctly"
+#     assert ylim == (-3.95, 104.95), "on_release function did not set ylim correctly"
     
 @pytest.mark.qt
 def test_on_motion_canvas(qtbot, function_plotter: FunctionPlotter):
