@@ -10,30 +10,24 @@ jobs:
       fail-fast: false
 
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.10","3.11"]
         qt-lib: [pyqt6, pyside6]
         os: [ubuntu-20.04, windows-latest, macos-latest]
         include:
-          - python-version: "3.7"
-            tox-env: "py37"
-          - python-version: "3.8"
-            tox-env: "py38"
-          - python-version: "3.9"
-            tox-env: "py39"
           - python-version: "3.10"
             tox-env: "py310"
           - python-version: "3.11"
             tox-env: "py311"
-        exclude:
-          - qt-lib: pyside6
-            os: macos-latest
-            python-version: "3.7"
-          - qt-lib: pyside6
-            os: ubuntu-20.04
-            python-version: "3.7"
-          - qt-lib: pyside6
-            os: windows-latest
-            python-version: "3.11"
+        # exclude:
+        #   - qt-lib: pyside6
+        #     os: macos-latest
+        #     python-version: "3.7"
+        #   - qt-lib: pyside6
+        #     os: ubuntu-20.04
+        #     python-version: "3.7"
+        #   - qt-lib: pyside6
+        #     os: windows-latest
+        #     python-version: "3.11"
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
@@ -50,7 +44,7 @@ jobs:
           sudo apt-get install -y libgles2-mesa-dev
         fi
       shell: bash
-    - name: Test with tox
+    - name: Test with pytest
       run: |
         python -m pytest
 
