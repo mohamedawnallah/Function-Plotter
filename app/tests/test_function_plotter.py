@@ -1,11 +1,5 @@
 import pytest
-from PySide6.QtWidgets import QMessageBox
-from PySide6.QtCore import Qt
-from unittest.mock import MagicMock
-
 from function_plotter import FunctionPlotter
-import os
-
 
 def test_init_variables(function_plotter: FunctionPlotter):
     """Test the initialization of the variables"""
