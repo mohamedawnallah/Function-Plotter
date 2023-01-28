@@ -1,0 +1,2 @@
+[console_scripts]
+function_plotter = app.main:main
