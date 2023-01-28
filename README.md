@@ -59,7 +59,7 @@ Here are a few examples of the types of functions you can plot with Function Plo
 ## App Source Code
     .
     ├── ...
-    ├── app                      # Documentation files (alternatively `doc`)
+    ├── app                      # App source code
     │   ├── figures              # Generated figures by the app
     │   ├── logs                 # Generated logs by the app
     │   ├── tests                # Automated tests for the app
