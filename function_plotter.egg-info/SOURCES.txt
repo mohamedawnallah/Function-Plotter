@@ -1,8 +1,0 @@
-LICENSE
-README.md
-setup.py
-function_plotter.egg-info/PKG-INFO
-function_plotter.egg-info/SOURCES.txt
-function_plotter.egg-info/dependency_links.txt
-function_plotter.egg-info/requires.txt
-function_plotter.egg-info/top_level.txt
